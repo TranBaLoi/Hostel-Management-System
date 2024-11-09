@@ -37,7 +37,7 @@
                 <span class="badge red mr-1">{{room.room_name}}</span>
               </a>
               <a href="">
-                {% if room.slot_available != 0 %}
+                {% if room.slot_available != 0%}
                 <span class="badge green mr-1">AVAILABLE</span>
                 {% else %}
                 <span class="badge red mr-1">UNAVAILABLE</span>
@@ -72,7 +72,7 @@
             
             <form class="d-flex justify-content-left" action="{% url 'app:accomodation-request' %}" method="POST">
               {% csrf_token %}
-              {% if room.slot_available != 0 %}
+              {% if room.slot_available != 0%}
                   <input type="number" placeholder="ROOM: Available ✓" aria-label="Search" class="form-control" style="width: 200px" disabled>
                   <input type="hidden" name="room_id" value="{{room.id}}"> <!--gửi trạng thái về server--> 
                   <button class="btn btn-primary btn-md my-0 p" type="submit">
@@ -80,7 +80,7 @@
                       <i class="fas fa-shopping-cart ml-1"></i>
                   </button>
               {% else %}
-                  <input type="text" placeholder="ROOM: Unavailable ✗" aria-label="Search" class="form-control text-danger" style="width: 150px" disabled>
+              <input type="text" placeholder="ROOM: Unavailable ✗" aria-label="Search" class="form-control text-danger" style="width: 150px" disabled>
                   <p class="text-danger ml-2">Room Not Available</p>
               {% endif %}
           

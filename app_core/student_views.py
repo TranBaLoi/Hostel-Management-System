@@ -104,7 +104,7 @@ def room_members_list(request):
 def room_transfer(request):
     is_student = False
     is_roomed = False
-    rooms = Rooms.objects.filter(is_available=True)
+    rooms = Rooms.objects.filter(is_available=True) # get all available rooms 
     student_user = Student_Account.objects.filter(user = request.user).first()
     if student_user:
         is_student = True
@@ -113,6 +113,7 @@ def room_transfer(request):
     if request.method == "POST":
         reason = request.POST.get("reason")
         room = request.POST.get("room_option")
+        # Check if the student already has a pending transfer request
         if RoomTransfer.objects.filter(student  = student_user).first():
             messages.error(request, "You already have a pending transfer request")
             return redirect(request.META.get("HTTP_REFERER"))
@@ -124,14 +125,18 @@ def room_transfer(request):
             student_user.wallet -= room_obj.charge
             student_user.save()
             room_cur.slot_available += 1
+            room_cur.is_available = True 
             room_cur.save()
             room_transfer_obj = RoomTransfer(reason = reason, student = student_user, room = room_obj)
             room_transfer_obj.save()
-
-            room_obj.is_available = False
-            room_obj.slot_available -= 1 
+             
+            room_obj.slot_available -= 1
+            if room_obj.slot_available == 0:
+                room_obj.is_available = False
             room_obj.save()
-
+            # rooms = Rooms.objects.all()
+            # Cập nhật yêu cầu chỗ ở với phòng mới
+            
             messages.success(request, "Successfully requested for room transfer. Please continue to check your dashboard for your request confirmation!")
             return redirect(request.META.get("HTTP_REFERER"))
         else:
@@ -140,8 +145,6 @@ def room_transfer(request):
 
     context = {"is_student":is_student, "is_roomed":is_roomed, "student_user":student_user, "rooms":rooms}
     return render(request, "student/room_transfer.html", context)
-
-
 
 def guest_stay(request):
     is_student = False

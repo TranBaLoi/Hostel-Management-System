@@ -215,12 +215,12 @@
                 <table class="table mb-0" style="background-color: #ffffff;">
                     <tbody>
                         {% for notification in notifications %}
-                            <tr style="border-bottom: 1px dashed black;">
+                            <tr style="border-bottom: 2px dashed black;">
                                 <td style="width: 5%; font-weight: bold;">
                                     <span style="color: red; animation: blink-animation 0.55s infinite;">»</span> 
                                 </td>
                                 <td style="width: 75%; color: black;">
-                                    <strong>{{ notification.title }}:</strong><br>
+                                    <strong style = "color: red ;font-size: 1.2em">{{ notification.title }}:</strong><br>
                                     <span>{{ notification.content}}</span> 
                                 </td>
                                 <td style="width: 20%; color: black;" class="text-muted text-right">
