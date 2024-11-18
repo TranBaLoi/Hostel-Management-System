@@ -177,15 +177,17 @@ class Guideline(models.Model):
     def __str__(self):
         return f"{self.rule[:20]}"
 class Rent(models.Model):
-    room=models.ForeignKey(Rooms, on_delete = models.CASCADE)
+    room = models.ForeignKey(Rooms, on_delete=models.CASCADE)
     rent = models.IntegerField()
     electricitybill = models.IntegerField()
     waterbill = models.IntegerField()
     service = models.IntegerField()
     is_paid = models.BooleanField(default=False)
-    
+    student = models.ForeignKey(Student_Account, on_delete=models.CASCADE)
+
     def __str__(self):
-        return f'Rent of Room {self.room}'
+        return f'Rent of Room {self.room} by {self.student}'
+    
     def total_bill(self):
         return self.rent + self.electricitybill + self.waterbill + self.service
 
@@ -198,3 +200,23 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.title
+
+class Revenue(models.Model):
+    roomrevenue = models.IntegerField(default=0)
+    electric = models.IntegerField(default=0)
+    water = models.IntegerField(default=0)
+    service = models.IntegerField(default=0)
+
+    def calculate_revenue(self):
+        rents = Rent.objects.filter(is_paid=True) 
+        self.roomrevenue = sum(rent.total_bill() for rent in rents)
+        self.electric = sum(rent.electricitybill for rent in rents)
+        self.water = sum(rent.waterbill for rent in rents)
+        self.service = sum(rent.service for rent in rents)
+
+    def save(self, *args, **kwargs):
+        self.calculate_revenue()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Doanh thu: {self.roomrevenue}, Tiền điện: {self.electric}, Tiền nước: {self.water}, Dịch vụ: {self.service}"

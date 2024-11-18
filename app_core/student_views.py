@@ -205,3 +205,19 @@ def view_rents(request):
     rents = Rent.objects.all()
     return render(request, 'student/view_rents.html', {'rents': rents})
 
+
+def pay_rent(request, rent_id):
+    if request.method == 'POST':
+        rent = get_object_or_404(Rent, id=rent_id)
+        student = rent.student
+        total_bill = rent.total_bill()
+        if student.wallet >= total_bill:
+            student.wallet -= total_bill
+            student.save()
+            rent.is_paid = True
+            rent.save()
+        
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    messages.error(request, "Invalid request method.")
+    return redirect(request.META.get('HTTP_REFERER'))

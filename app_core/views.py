@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import *
 from django.http import JsonResponse
+from django.contrib.auth.decorators import user_passes_test
 
 
 def welcome_page(request):
@@ -69,3 +70,25 @@ def check_username(request):
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
     return JsonResponse(data)
+def admin_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_active and request.user.is_staff:
+            return view_func(request, *args, **kwargs)
+        else:
+            return redirect('permission-denied')
+    return wrapper
+
+@admin_required
+def revenue_view(request):
+    revenue_record, created = Revenue.objects.get_or_create(id=1)
+    revenue_record.save()
+    context = {
+        'total_revenue': revenue_record.roomrevenue,
+        'total_electric': revenue_record.electric,
+        'total_water': revenue_record.water,
+        'total_service': revenue_record.service,
+    }
+    return render(request, 'admin_templates/revenue.html', context)
+
+def permission_denied_view(request):
+    return render(request, 'admin_templates/permission_denied.html')

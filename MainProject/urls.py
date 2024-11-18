@@ -8,7 +8,7 @@ from app_core.admin_views import *
 
 
 urlpatterns = [
-
+    path('permission-denied/',permission_denied_view, name='permission-denied'),
     path("admin/", admin.site.urls),
     path("", welcome_page, name="welcome-page"),
     path("admin_home", admin_home, name="admin-welcome-page"),
