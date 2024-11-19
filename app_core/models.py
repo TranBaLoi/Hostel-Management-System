@@ -206,11 +206,13 @@ class Revenue(models.Model):
     electric = models.IntegerField(default=0)
     water = models.IntegerField(default=0)
     service = models.IntegerField(default=0)
+    rentroom = models.IntegerField(default=0)
 
     def calculate_revenue(self):
         rents = Rent.objects.filter(is_paid=True) 
         self.roomrevenue = sum(rent.total_bill() for rent in rents)
         self.electric = sum(rent.electricitybill for rent in rents)
+        self.rentroom = sum(rentt.rent for rentt in rents)
         self.water = sum(rent.waterbill for rent in rents)
         self.service = sum(rent.service for rent in rents)
 
@@ -219,4 +221,4 @@ class Revenue(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Doanh thu: {self.roomrevenue}, Tiền điện: {self.electric}, Tiền nước: {self.water}, Dịch vụ: {self.service}"
+        return f"Doanh thu: {self.roomrevenue},Tiền Nhà: {self.rentroom}, Tiền điện: {self.electric}, Tiền nước: {self.water}, Dịch vụ: {self.service}"

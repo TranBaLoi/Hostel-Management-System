@@ -84,6 +84,7 @@ def revenue_view(request):
     revenue_record.save()
     context = {
         'total_revenue': revenue_record.roomrevenue,
+        'total_rent': revenue_record.rentroom,
         'total_electric': revenue_record.electric,
         'total_water': revenue_record.water,
         'total_service': revenue_record.service,
