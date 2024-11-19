@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .student_views import *
 from app_core.admin_views import *
+from .views import *
 
 
 app_name = "app"
@@ -21,8 +22,9 @@ urlpatterns = [
     path("complain", complaints, name = "complaints"),
     path('rents', view_rents, name='view-rents'),
     path('member_list', room_members_list, name='room-members'),
-    
+    path('pay_rent/<int:rent_id>/', pay_rent, name='pay_rent'),
     # Admin Urls
+    path("revenue_view", revenue_view, name='revenue'),
     path("manage_rent", manage_rent, name = "manage-rent"),
     path("create_block", create_block, name = "create-block"),
     path("create_manager", create_manager, name = "create-manager"),

@@ -1,7 +1,6 @@
 {% extends 'admin_templates/base.html' %}
 
-{% block title %} CreateRoom  {% endblock %}
-
+{% block title %} Tạo Hóa Đơn  {% endblock %}
 
 {% block content %} 
 <br>
@@ -11,7 +10,7 @@
 
         <!-- Heading -->
         <br><br>
-        <h2 class="my-5 h2 text-center text-primary">Create Room</h2>
+        <h2 class="my-5 h2 text-center text-primary">Tạo Hóa Đơn</h2>
 
         <!--Grid row-->
         <div class="row">
@@ -23,46 +22,56 @@
             <div class="card">
 
             <!--Card content-->
-            <form class="card-body" action="{% url 'app:manage-rent' %}" method="POST"> {% csrf_token %}
-                <!--email-->
+            <form class="card-body" action="{% url 'manage_rent' %}" method="POST"> 
+                {% csrf_token %}
+                <!--Rent-->
                 <div class="md-form mb-5">
                     <input type="number" id="rent" class="form-control" name="rent" required>
-                    <label for="rent" class="">Rent</label>
+                    <label for="rent">Tiền thuê</label>
                 </div>
                 <!--Electricity Bill-->
                 <div class="md-form mb-5">
                     <input type="number" id="electricbill" class="form-control" name="electricbill" required>
-                    <label for="electricbill" class="">Electricity Bill</label>
+                    <label for="electricbill">Tiền điện</label>
                 </div>
                 <!--Water Bill-->
                 <div class="md-form mb-5">
                     <input type="number" id="waterbill" class="form-control" name="waterbill" required>
-                    <label for="waterbill" class="">Water Bill</label>
+                    <label for="waterbill">Tiền nước</label>
                 </div>
                 <!--Service Charges-->
                 <div class="md-form mb-5">
                     <input type="number" id="service" class="form-control" name="service" required>
-                    <label for="service" class="">Service Charges</label>
+                    <label for="service">Dịch vụ chung</label>
                 </div>
-                <!--address-->
+                <!--Room Selection-->
                 <div class="md-form mb-5">
-                    <select id="room_option" class="form-control" name="room">
-                        <option>Choose Room</option>
+                    <select id="room_option" class="form-control" name="room" required>
+                        <option value="">Chọn phòng</option>
                         {% for room in rooms %}
-                            <option value="{{room.id}}">Room{{room.room_name}}</option>
+                            <option value="{{ room.id }}">Phòng {{ room.room_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!--Student Selection-->
+                <div class="md-form mb-5">
+                    <select id="student_option" class="form-control" name="student" required>
+                        <option value="">Chọn sinh viên</option>
+                        {% for student in students %}
+                            <option value="{{ student.id }}">{{ student.first_name }} {{ student.last_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
                 <hr class="mb-4">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Create Rent</button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Tạo Hóa Đơn</button>
                 {% if messages %}
                     <hr class="mb-1">
                     {% for message in messages %}
                     {% if message.tags == 'success' %}
-                    <span class="btn btn-success btn-lg btn-block" type="button">{{message}}</span>
+                    <span class="btn btn-success btn-lg btn-block" type="button">{{ message }}</span>
                     {% else %}
-                    <span class="btn btn-danger btn-lg btn-block" type="button">{{message}}</span>
+                    <span class="btn btn-danger btn-lg btn-block" type="button">{{ message }}</span>
                     {% endif %}
                     {% endfor %}
                 {% endif %}

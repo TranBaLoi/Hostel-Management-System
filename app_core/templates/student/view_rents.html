@@ -3,39 +3,49 @@
 {% block title %} RoomRequest {% endblock %}
 
 {% block content %}
-<br><br>
 <!--Main layout-->
 <main class="mt-5 pt-4">
     <div class="container wow fadeIn">
-        <h2 class="my-5 h2 text-center text-primary">RENT PAYMENT INFORMATION</h2>
+        <h2 class="my-5 h2 text-center text-primary">THÔNG TIN THANH TOÁN TIỀN PHÒNG</h2>
     
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Room Name</th>
+                        <th scope="col">Student Name</th>
                         <th scope="col">Rent</th>
                         <th scope="col">Electric</th>
                         <th scope="col">Water</th>
                         <th scope="col">General Services</th>
                         <th scope="col">Total</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Pay here</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for rent in rents %}
                     <tr>
-                        <td>{{ rent.room}}</td>
+                        <td>{{ rent.room }}</td>
+                        <td>{{ rent.student }}</td>
                         <td>{{ rent.rent }}</td>
                         <td>{{ rent.electricitybill }}</td>
                         <td>{{ rent.waterbill }}</td>
                         <td>{{ rent.service }}</td>
                         <td>{{ rent.total_bill }}</td>
                         <td>
-                            {%if rent.is_paid %}
-                                <span style="color: green;">Paid </span>
+                            {% if rent.is_paid %}
+                                <span style="color: green;">Paid</span>
                             {% else %}
-                                <span style="color: red;">Un Paid </span>
+                                <span style="color: red;">Un Paid</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not rent.is_paid %}
+                                <form method="POST" action="{% url 'app:pay_rent' rent.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary">pay</button>
+                                </form>
                             {% endif %}
                         </td>
                     </tr>
@@ -45,5 +55,4 @@
         </div>   
     </div>
 </main>
-<br><br><br><br><br><br>
 {% endblock %}

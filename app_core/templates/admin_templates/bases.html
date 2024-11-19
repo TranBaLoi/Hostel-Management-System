@@ -22,6 +22,7 @@
       height: 100%;
       margin: 0;
       padding: 0;
+      background-color: white;
     }
 
     body {
@@ -49,9 +50,10 @@
       }
     }
   </style>
+
 </head>
 
-<body style="background-image: url(../static/img/image-b4.png); background-repeat: no-repeat; background-size: cover;">
+<body>
 
     {% include 'navbar.html' %}
 
@@ -63,15 +65,10 @@
     {% include 'footer.html' %}
 
   <!-- SCRIPTS -->
-  <!-- JQuery -->
   <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-  <!-- Bootstrap tooltips -->
   <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
-  <!-- Bootstrap core JavaScript -->
   <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-  <!-- MDB core JavaScript -->
   <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
-  <!-- Initializations -->
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
