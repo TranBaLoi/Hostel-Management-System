@@ -7,50 +7,50 @@
 <br><br><br><br> 
 <!--Main layout-->
 <main>
-    <div class="container">
-
-    {% include 'admin_templates/admin_nav.html' %}
-
-    <h2 class="my-5 h2 text-center">Room Requests</h2>
-        <div class="table">
-            <table class="table-stripped table-hovered table-bordered">
-                <thead>
-                    <tr>
-                        <td>Accomodation ID</td>
-                        <td>Student ID</td>
-                        <td>Student Name</td>
-                        <td>Student Username</td>
-                        <td>Room ID</td>
-                        <td>Room Name</td>
-                        <td>Block Name</td>
-                        <td>House Manager</td>
-                        <td>Date</td>
-                        <td>Action</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for request in requestss %}
-                    <tr>
-                        <td>{{request.id}}</td>
-                        <td>{{request.student.id}}</td>
-                        <td>{{request.student.first_name}} - {{request.student.last_name}}</td>
-                        <td>{{request.student.user.username}}</td>
-                        <td>{{request.room.id}}</td>
-                        <td>{{request.room.room_name}}</td>
-                        <td>{{request.room.block.block_name}}</td>
-                        <td>{{request.room.block.house_manager.full_name}}</td>
-                        <td>{{request.created_at}}</td>
-                        {% if request.approved %}
-                        <td><a href="{% url 'app:approve_or_disapprove' request.id %}" type="button" class="btn btn-danger">Disapprove</a></td>
-                        {% else %}
-                        <td><a href="{% url 'app:approve_or_disapprove' request.id %}" type="button" class="btn btn-success">Approve</a></td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    {% if request.user.is_authenticated %}
+        <div class="container">
+        {% include 'admin_templates/admin_nav.html' %}
+        <h2 class="my-5 h2 text-center">Room Requests</h2>
+            <div class="table">
+                <table class="table-stripped table-hovered table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Accomodation ID</td>
+                            <td>Student ID</td>
+                            <td>Student Name</td>
+                            <td>Student Username</td>
+                            <td>Room ID</td>
+                            <td>Room Name</td>
+                            <td>Block Name</td>
+                            <td>House Manager</td>
+                            <td>Date</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for request in requestss %}
+                        <tr>
+                            <td>{{request.id}}</td>
+                            <td>{{request.student.id}}</td>
+                            <td>{{request.student.first_name}} - {{request.student.last_name}}</td>
+                            <td>{{request.student.user.username}}</td>
+                            <td>{{request.room.id}}</td>
+                            <td>{{request.room.room_name}}</td>
+                            <td>{{request.room.block.block_name}}</td>
+                            <td>{{request.room.block.house_manager.full_name}}</td>
+                            <td>{{request.created_at}}</td>
+                            {% if request.approved %}
+                            <td><a href="{% url 'app:approve_or_disapprove' request.id %}" type="button" class="btn btn-danger">Disapprove</a></td>
+                            {% else %}
+                            <td><a href="{% url 'app:approve_or_disapprove' request.id %}" type="button" class="btn btn-success">Approve</a></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    {% endif %}
 </main>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

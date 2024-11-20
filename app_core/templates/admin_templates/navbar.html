@@ -4,7 +4,7 @@
 
       <!-- Brand -->
       <a class="navbar-brand waves-effect" href="{% url 'admin-welcome-page' %}">
-        <strong class="text-primary">AMS</strong>
+        <strong class="text-primary">HMS</strong>
       </a>
 
       <!-- Collapse -->
@@ -33,7 +33,10 @@
             <a class="nav-link waves-effect" href="{% url 'app:create-room' %}"><b>Create Room</b></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'app:revenue' %}"><b>Revenue</b></a>
+            <a class="nav-link waves-effect" href="{% url 'app:admin-revenue' %}"><b>Revenue</b></a>
+          </li>  
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'app:admin-dashboard' %}"><b>Rooms</b></a>
           </li>  
           {% endif %}
         </ul>

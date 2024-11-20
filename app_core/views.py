@@ -1,7 +1,11 @@
+import base64
+import io
 from django.shortcuts import *
 from django.contrib.auth import authenticate, login as dlogin, logout as dlogout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from matplotlib import pyplot as plt
+import urllib
 from .models import *
 from django.http import JsonResponse
 from django.contrib.auth.decorators import user_passes_test
@@ -78,18 +82,3 @@ def admin_required(view_func):
             return redirect('permission-denied')
     return wrapper
 
-@admin_required
-def revenue_view(request):
-    revenue_record, created = Revenue.objects.get_or_create(id=1)
-    revenue_record.save()
-    context = {
-        'total_revenue': revenue_record.roomrevenue,
-        'total_rent': revenue_record.rentroom,
-        'total_electric': revenue_record.electric,
-        'total_water': revenue_record.water,
-        'total_service': revenue_record.service,
-    }
-    return render(request, 'admin_templates/revenue.html', context)
-
-def permission_denied_view(request):
-    return render(request, 'admin_templates/permission_denied.html')

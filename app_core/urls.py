@@ -24,7 +24,7 @@ urlpatterns = [
     path('member_list', room_members_list, name='room-members'),
     path('pay_rent/<int:rent_id>/', pay_rent, name='pay_rent'),
     # Admin Urls
-    path("revenue_view", revenue_view, name='revenue'),
+    path("revenue_view", revenue_view, name='admin-revenue'),
     path("manage_rent", manage_rent, name = "manage-rent"),
     path("create_block", create_block, name = "create-block"),
     path("create_manager", create_manager, name = "create-manager"),
@@ -39,6 +39,6 @@ urlpatterns = [
     path("guest_status/<str:guest_id>", guest_status, name = "guest_status"),
     path("transfer_status/<str:transfer_id>", transfer_status, name = "transfer_status"),
     path("request_dashboard", request_dashboard, name = "request-dashboard"),
-    
+    path('admin-dashboard/', admin_dashboard, name='admin-dashboard'),
 
 ]

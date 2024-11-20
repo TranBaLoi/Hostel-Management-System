@@ -1,4 +1,8 @@
+import base64
+import io
 from django.shortcuts import *
+from matplotlib import pyplot as plt
+import urllib
 from .models import *
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
@@ -166,6 +170,53 @@ def transfer_status(request, transfer_id):
         transfer.approved = True
     transfer.save()
     return redirect(request.META.get("HTTP_REFERER"))
+
+def revenue_view(request):
+    revenue_record, created = Revenue.objects.get_or_create(id=1)
+    revenue_record.save()
+    context = {
+        'total_revenue': revenue_record.roomrevenue,
+        'total_rent': revenue_record.rentroom,
+        'total_electric': revenue_record.electric,
+        'total_water': revenue_record.water,
+        'total_service': revenue_record.service,
+    }
+    return render(request, 'admin_templates/admin_revenue.html', context)
+
+def permission_denied_view(request):
+    return render(request, 'admin_templates/permission_denied.html')
+
+def generate_pie_chart(available_rooms, full_rooms):
+    labels = ['Available Rooms', 'Full Rooms']
+    sizes = [available_rooms, full_rooms]
+    colors = ['#ff9999','#66b3ff']
+    explode = (0.1, 0)  
+
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    ax1.axis('equal') 
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    uri = urllib.parse.quote(string)
+    return uri
+
+def admin_dashboard(request):
+    rooms = Rooms.objects.all()
+    available_rooms = rooms.filter(is_available=True).count()
+    full_rooms = rooms.filter(slot_available=0).count()
+
+    pie_chart_uri = generate_pie_chart(available_rooms, full_rooms)
+
+    context = {
+        "available_rooms": available_rooms,
+        "full_rooms": full_rooms,
+        "pie_chart_uri": pie_chart_uri
+    }
+    return render(request, "admin_templates/admin_dashboard.html", context)
 
 
 

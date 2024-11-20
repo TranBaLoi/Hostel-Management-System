@@ -1,7 +1,12 @@
+import base64
+import io
 from django.shortcuts import *
+import urllib
+
+from matplotlib import pyplot as plt
 from .models import *
 from django.contrib import messages
-
+from matplotlib import *
 
 def student_register(request):
     is_student = False
